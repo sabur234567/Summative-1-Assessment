@@ -1,0 +1,105 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /8ball:
+    post:
+      tags:
+      - magic-8-ball-controller
+      operationId: eightBallQuestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomErrorResponse'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /word:
+    get:
+      tags:
+      - word-controller
+      operationId: getWordandDefinition
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomErrorResponse'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /quote:
+    get:
+      tags:
+      - quote-controller
+      operationId: getQuote
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomErrorResponse'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Quote'
+components:
+  schemas:
+    CustomErrorResponse:
+      type: object
+      properties:
+        errorMsg:
+          type: string
+        status:
+          type: integer
+          format: int32
+        errorCode:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    Quote:
+      required:
+      - author
+      - id
+      - quote
+      type: object
+      properties:
+        author:
+          type: string
+        id:
+          maximum: 4
+          minimum: 4
+          type: integer
+          format: int32
+        quote:
+          type: string
